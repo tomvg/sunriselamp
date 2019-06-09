@@ -1,0 +1,25 @@
+{
+  "name": "sunriselamp",
+  "version": "0.1.0",
+  "description": "Software for controlling a raspberry pi based sunrise lamp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomvg/sunriselamp.git"
+  },
+  "keywords": [
+    "sunrise",
+    "lamp",
+    "raspberry",
+    "pi"
+  ],
+  "author": "Tom van Groeningen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomvg/sunriselamp/issues"
+  },
+  "homepage": "https://github.com/tomvg/sunriselamp#readme"
+}
