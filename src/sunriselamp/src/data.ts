@@ -9,11 +9,20 @@ abstract class Data {
       return
     }
     this.subscribers.push(viewer)
+    if(this.subscribers.length === 1) {
+      this.onFirstSubscriber()
+    }
+    viewer.notify()
   }
 
   public unsubscribe(viewer: View): void {
     const index = this.subscribers.findIndex(v => v === viewer)
-    this.subscribers.splice(index, 1)
+    if(index >= 0) {
+      this.subscribers.splice(index, 1)
+      if(this.subscribers.length === 0) {
+        this.onNoMoreSubscribers()
+      }
+    }
   }
 
   protected notifyChangeToSubscribers(): void {
@@ -21,6 +30,9 @@ abstract class Data {
       viewer.notify()
     }
   }
+
+  protected onFirstSubscriber() {}
+  protected onNoMoreSubscribers() {}
 }
 
 export = Data
