@@ -14,16 +14,18 @@ class Clock extends Data {
     this.notifyTimer = setTimeout(fn, timeout)
   }
 
-  private notifyAndSetTimer() {
+  private notifyAndSetTimer = () => {
     this.notifyChangeToSubscribers()
     this.runAtNextWholeMinute(this.notifyAndSetTimer)
   }
 
-  private onFirstSubscriber() {
-    this.notifyAndSetTimer()
+  protected onFirstSubscriber() {
+    this.runAtNextWholeMinute(this.notifyAndSetTimer)
   }
 
-  private onNoMoreSubscribers() {
+  protected onNoMoreSubscribers() {
     clearTimeout(this.notifyTimer)
   }
 }
+
+export = Clock
