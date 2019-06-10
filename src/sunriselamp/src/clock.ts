@@ -1,6 +1,7 @@
 import Data = require('./data')
 
-/* Notifies all subscribers every minute */
+/* Notifies all subscribers every minute. Only sets timers when there
+   are any subscribers. */
 class Clock extends Data {
   private notifyTimer: NodeJS.Timeout = {} as NodeJS.Timeout
 

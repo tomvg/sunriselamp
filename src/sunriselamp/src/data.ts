@@ -1,5 +1,10 @@
 import View = require('./view')
 
+/* Abstract class that allows any observers to be notified whenever
+   there is a change to the data.
+   Observers can subscribe only once.
+   onFirstSubscriber and onNoMoreSubscribers can optionally be implemented
+   by a derived class in order to take actions on these events. */
 abstract class Data {
   private subscribers: View[] = []
 
