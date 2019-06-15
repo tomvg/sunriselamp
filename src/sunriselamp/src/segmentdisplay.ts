@@ -44,13 +44,6 @@ class SegmentDisplay extends View {
     this.refreshDisplay()
   }
 
-  setDisplayTime(hours: number, minutes:number) {
-    this.displayDigits[0] = Math.floor(hours / 10)
-    this.displayDigits[1] = hours % 10
-    this.displayDigits[2] = Math.floor(minutes / 10)
-    this.displayDigits[3] = minutes % 10
-  }
-
   turnDisplayOn(): void {
     // If already on, just reset the timeout
     if(this.displayIsOn) {
