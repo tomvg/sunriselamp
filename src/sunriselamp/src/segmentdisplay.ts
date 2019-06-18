@@ -17,7 +17,6 @@ class SegmentDisplay extends View {
 
   private displayIsOn: boolean = false
   private displayTimer: NodeJS.Timeout = {} as NodeJS.Timeout
-
   private displayTimeout = 10000
 
   private blinkTimer: NodeJS.Timeout = {} as NodeJS.Timeout
@@ -77,7 +76,7 @@ class SegmentDisplay extends View {
     else {
       this.displayIsOn = true
       this.driver.setDisplay(this.displayHour, this.displayMinute, this.showSeparator)
-      this.displayTimer.refresh()
+      this.displayTimer = setTimeout(() => this.turnDisplayOff(), this.displayTimeout)
     }
   }
 
