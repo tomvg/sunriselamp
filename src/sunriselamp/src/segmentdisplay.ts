@@ -38,10 +38,26 @@ class SegmentDisplay extends View {
     this.turnBlinkingOn()
   }
 
+
+  public showClock (): void {
+    this.notify = this.updateWithClockTime
+    this.clock.subscribe(this)
+    this.currentDatasource = this.clock
+    this.turnDisplayOn()
+    this.turnBlinkingOff()
+  }
+
   private updateWithAlarmTime(): void {
     const now = this.alarm.getAlarmTime()
     this.displayHour = now.hour
     this.displayMinute = now.minute
+    this.refreshDisplay()
+  }
+
+  private updateWithClockTime(): void {
+    const now = this.clock.getCurrentTime()
+    this.displayHour = now.getHours()
+    this.displayMinute = now.getMinutes()
     this.refreshDisplay()
   }
 

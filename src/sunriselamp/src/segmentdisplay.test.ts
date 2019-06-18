@@ -29,12 +29,35 @@ test('the display unsubscribes from the alarm when the display is turned off', (
   expect(alarm.isSubscribed(display)).toBe(false)
 })
 
+
+test('the display unsubscribes from the clock when the display is turned off', () => {
+  const driver = new MockDriver()
+  const clock = new Clock()
+  const display = new SegmentDisplay(driver, clock, new AlarmSettings())
+  display.showClock()
+  expect(clock.isSubscribed(display)).toBe(true)
+  display.turnDisplayOff()
+  expect(clock.isSubscribed(display)).toBe(false)
+})
+
 test('the alarm display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
   const display = new SegmentDisplay(driver, new Clock(), new AlarmSettings())
   expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
   display.showAlarm()
+  setTimeout(() => {
+    expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
+    done()
+  }, 10001)
+})
+
+test('the clock display is turned off again after 10 seconds', (done) => {
+  jest.setTimeout(15000); // increase the timeout for this test
+  const driver = new MockDriver()
+  const display = new SegmentDisplay(driver, new Clock(), new AlarmSettings())
+  expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
+  display.showClock()
   setTimeout(() => {
     expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
     done()
