@@ -30,21 +30,22 @@ class SegmentDisplay extends View {
     this.alarm = alarm;
   }
 
-  showAlarm (): void {
+  public showAlarm (): void {
     this.notify = this.updateWithAlarmTime
     this.alarm.subscribe(this)
+    this.currentDatasource = this.alarm
     this.turnDisplayOn()
     this.turnBlinkingOn()
   }
 
-  updateWithAlarmTime(): void {
+  private updateWithAlarmTime(): void {
     const now = this.alarm.getAlarmTime()
     this.displayHour = now.hour
     this.displayMinute = now.minute
     this.refreshDisplay()
   }
 
-  turnDisplayOn(): void {
+  private turnDisplayOn(): void {
     // If already on, just reset the timeout
     if(this.displayIsOn) {
       this.displayTimer.refresh()
@@ -56,7 +57,7 @@ class SegmentDisplay extends View {
     }
   }
 
-  turnDisplayOff() {
+  public turnDisplayOff() {
     if(this.displayIsOn) {
       this.currentDatasource.unsubscribe(this)
       clearTimeout(this.displayTimer)
@@ -66,7 +67,7 @@ class SegmentDisplay extends View {
     }
   }
 
-  turnBlinkingOn() {
+  private turnBlinkingOn() {
     if(!this.blinkingIsOn) {
       this.blinkingIsOn = true
       this.blinkTimer = setInterval(() => {
@@ -76,7 +77,7 @@ class SegmentDisplay extends View {
     }
   }
 
-  turnBlinkingOff() {
+  private turnBlinkingOff() {
     if(this.blinkingIsOn) {
       this.blinkingIsOn = false
       clearInterval(this.blinkTimer)
@@ -85,7 +86,7 @@ class SegmentDisplay extends View {
     }
   }
 
-  refreshDisplay() {
+  private refreshDisplay() {
     if(this.displayIsOn) {
       this.driver.setDisplay(this.displayHour, this.displayMinute, this.showSeparator)
     }

@@ -9,7 +9,7 @@ abstract class Data {
   private subscribers: View[] = []
 
   public subscribe(viewer: View): void {
-    if(this.subscribers.find(v => v === viewer)) {
+    if(this.isSubscribed(viewer)) {
       // Already subscribed
       return
     }
@@ -28,6 +28,10 @@ abstract class Data {
         this.onNoMoreSubscribers()
       }
     }
+  }
+
+  public isSubscribed(viewer: View) {
+    return this.subscribers.find(v => v === viewer) != undefined
   }
 
   protected notifyChangeToSubscribers(): void {
