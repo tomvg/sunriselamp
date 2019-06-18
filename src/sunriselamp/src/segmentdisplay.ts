@@ -9,7 +9,7 @@ class SegmentDisplay extends View {
 
   private clock: Clock
   private alarm: AlarmSettings
-  private currentDatasource: Data = {} as Data
+  private currentDatasource: Data
 
   private displayHour: number = 0
   private displayMinute: number = 0
@@ -17,6 +17,7 @@ class SegmentDisplay extends View {
 
   private displayIsOn: boolean = false
   private displayTimer: NodeJS.Timeout = {} as NodeJS.Timeout
+
   private displayTimeout = 10000
 
   private blinkTimer: NodeJS.Timeout = {} as NodeJS.Timeout
@@ -28,12 +29,16 @@ class SegmentDisplay extends View {
     this.driver = driver
     this.clock = clock;
     this.alarm = alarm;
+    this.currentDatasource = clock
   }
 
   public showAlarm (): void {
     this.notify = this.updateWithAlarmTime
-    this.alarm.subscribe(this)
-    this.currentDatasource = this.alarm
+    if(this.currentDatasource != this.alarm) {
+      this.currentDatasource.unsubscribe(this)
+      this.currentDatasource = this.alarm
+    }
+    this.currentDatasource.subscribe(this)
     this.turnDisplayOn()
     this.turnBlinkingOn()
   }
@@ -41,8 +46,11 @@ class SegmentDisplay extends View {
 
   public showClock (): void {
     this.notify = this.updateWithClockTime
-    this.clock.subscribe(this)
-    this.currentDatasource = this.clock
+    if(this.currentDatasource != this.clock) {
+      this.currentDatasource.unsubscribe(this)
+      this.currentDatasource = this.clock
+    }
+    this.currentDatasource.subscribe(this)
     this.turnDisplayOn()
     this.turnBlinkingOff()
   }
@@ -69,7 +77,7 @@ class SegmentDisplay extends View {
     else {
       this.displayIsOn = true
       this.driver.setDisplay(this.displayHour, this.displayMinute, this.showSeparator)
-      this.displayTimer = setTimeout(() => this.turnDisplayOff(), this.displayTimeout)
+      this.displayTimer.refresh()
     }
   }
 

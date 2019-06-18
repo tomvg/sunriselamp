@@ -40,6 +40,23 @@ test('the display unsubscribes from the clock when the display is turned off', (
   expect(clock.isSubscribed(display)).toBe(false)
 })
 
+test('the display unsubscribes from the current data source when another one is shown', () => {
+  const driver = new MockDriver()
+  const clock = new Clock()
+  const alarm = new AlarmSettings()
+  const display = new SegmentDisplay(driver, clock, alarm)
+  display.showClock()
+  expect(clock.isSubscribed(display)).toBe(true)
+  expect(alarm.isSubscribed(display)).toBe(false)
+  display.showAlarm()
+  expect(clock.isSubscribed(display)).toBe(false)
+  expect(alarm.isSubscribed(display)).toBe(true)
+  display.showClock()
+  expect(clock.isSubscribed(display)).toBe(true)
+  expect(alarm.isSubscribed(display)).toBe(false)
+})
+
+
 test('the alarm display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
