@@ -15,7 +15,7 @@ class Sk9822Driver {
 
     this.buffer = Buffer.alloc(bufferSize)
 
-    //this.device = spi.openSync(0, 0)
+    this.device = spi.openSync(0, 0)
 
     // initialise the device to off
     this.turnOff()
@@ -61,10 +61,10 @@ class Sk9822Driver {
   }
 
   writeCurrentBuffer() {
-   // this.device.transferSync([{
-   //   byteLength: this.buffer.byteLength,
-   //   sendBuffer: this.buffer,
-   // }])
+    this.device.transferSync([{
+      byteLength: this.buffer.byteLength,
+      sendBuffer: this.buffer,
+    }])
   }
 }
 
