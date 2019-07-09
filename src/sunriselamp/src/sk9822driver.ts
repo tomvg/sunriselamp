@@ -15,7 +15,9 @@ class Sk9822Driver {
 
     this.buffer = Buffer.alloc(bufferSize)
 
-    this.device = spi.openSync(0, 0)
+    this.device = spi.openSync(0, 0, {
+      maxSpeedHz: 2000000,
+    })
 
     // initialise the device to off
     this.turnOff()
