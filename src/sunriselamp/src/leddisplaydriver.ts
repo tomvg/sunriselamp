@@ -45,3 +45,5 @@ class LedDisplayDriver {
     }
   }
 }
+
+export = LedDisplayDriver

@@ -13,6 +13,6 @@ test('writes to the right leds', () =>
   const height = 13
 
   const sk9822driver = new MockSk9822Driver(width * height)
-  const display = new LedDisplayDriver
-
+  const display = new LedDisplayDriver(sk9822driver, startLed, width, height)
+  
 })
