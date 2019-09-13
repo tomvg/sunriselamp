@@ -71,7 +71,8 @@ class SegmentDisplay extends View {
   private turnDisplayOn(): void {
     // If already on, just reset the timeout
     if(this.displayIsOn) {
-      this.displayTimer.refresh()
+      clearTimeout(this.displayTimer)
+      this.displayTimer = setTimeout(() => this.turnDisplayOff(), this.displayTimeout)
     }
     else {
       this.displayIsOn = true
