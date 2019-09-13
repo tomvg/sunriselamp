@@ -15,6 +15,12 @@ class LedDisplayDriver {
     this.nPixels = width * height
   }
 
+write(image: Buffer) {
+  this.validateInput(image)
+  image = this.transform(image)
+  this.driver.setFromBitmap(image, this.startLed)
+}
+
 /** Change pixel order from left-right, bottom-up to
   * bottom-up, left-right.
   */
