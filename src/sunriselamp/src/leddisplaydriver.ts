@@ -28,7 +28,7 @@ write(image: Buffer) {
     const transformedImage = new Buffer(image.length)
     for(let oldIndex = 0; oldIndex < this.nPixels; oldIndex++) {
       const newIndex = this.convertIndexRightUpToUpRight(oldIndex)
-      transformedImage.writeUInt32LE(image.readUInt32LE(oldIndex), newIndex)
+      transformedImage.writeUInt32LE(image.readUInt32LE(4*oldIndex), 4*newIndex)
     }
     return transformedImage;
   }
