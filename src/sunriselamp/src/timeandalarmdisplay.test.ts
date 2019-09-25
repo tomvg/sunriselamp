@@ -1,9 +1,9 @@
-import SegmentDisplay = require('./segmentdisplay')
-import SegmentDisplayDriver = require('./segmentdisplaydriver')
+import TimeAndAlarmDisplay = require('./timeandalarmdisplay')
+import TimeDisplay = require('./timedisplay')
 import Clock = require('./clock')
 import AlarmSettings = require('./alarmsettings')
 
-class MockDriver extends SegmentDisplayDriver {
+class MockDriver extends TimeDisplay {
   setDisplay = jest.fn()
   turnDisplayOff = jest.fn()
 }
@@ -11,7 +11,7 @@ class MockDriver extends SegmentDisplayDriver {
 test('the display is updated when the alarm time changes', () => {
   const driver = new MockDriver()
   const alarm = new AlarmSettings()
-  const display = new SegmentDisplay(driver, new Clock(), alarm)
+  const display = new TimeAndAlarmDisplay(driver, new Clock(), alarm)
   display.showAlarm()
   alarm.setAlarmTime({hour: 1, minute: 2})
   const driverSetTimeArguments = driver.setDisplay.mock.calls.pop()
@@ -22,7 +22,7 @@ test('the display is updated when the alarm time changes', () => {
 test('the display unsubscribes from the alarm when the display is turned off', () => {
   const driver = new MockDriver()
   const alarm = new AlarmSettings()
-  const display = new SegmentDisplay(driver, new Clock(), alarm)
+  const display = new TimeAndAlarmDisplay(driver, new Clock(), alarm)
   display.showAlarm()
   expect(alarm.isSubscribed(display)).toBe(true)
   display.turnDisplayOff()
@@ -33,7 +33,7 @@ test('the display unsubscribes from the alarm when the display is turned off', (
 test('the display unsubscribes from the clock when the display is turned off', () => {
   const driver = new MockDriver()
   const clock = new Clock()
-  const display = new SegmentDisplay(driver, clock, new AlarmSettings())
+  const display = new TimeAndAlarmDisplay(driver, clock, new AlarmSettings())
   display.showClock()
   expect(clock.isSubscribed(display)).toBe(true)
   display.turnDisplayOff()
@@ -44,7 +44,7 @@ test('the display unsubscribes from the current data source when another one is 
   const driver = new MockDriver()
   const clock = new Clock()
   const alarm = new AlarmSettings()
-  const display = new SegmentDisplay(driver, clock, alarm)
+  const display = new TimeAndAlarmDisplay(driver, clock, alarm)
   display.showClock()
   expect(clock.isSubscribed(display)).toBe(true)
   expect(alarm.isSubscribed(display)).toBe(false)
@@ -60,30 +60,30 @@ test('the display unsubscribes from the current data source when another one is 
 test('the alarm display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
-  const display = new SegmentDisplay(driver, new Clock(), new AlarmSettings())
+  const display = new TimeAndAlarmDisplay(driver, new Clock(), new AlarmSettings())
   expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
   display.showAlarm()
   setTimeout(() => {
     expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
     done()
-  }, 10001)
+  }, 10500)
 })
 
 test('the clock display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
-  const display = new SegmentDisplay(driver, new Clock(), new AlarmSettings())
+  const display = new TimeAndAlarmDisplay(driver, new Clock(), new AlarmSettings())
   expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
   display.showClock()
   setTimeout(() => {
     expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
     done()
-  }, 10001)
+  }, 10500)
 })
 
 test('the separator sign blinks when the alarm is displayed', (done) => {
   const driver = new MockDriver()
-  const display = new SegmentDisplay(driver, new Clock(), new AlarmSettings())
+  const display = new TimeAndAlarmDisplay(driver, new Clock(), new AlarmSettings())
   display.showAlarm()
   //Test that the separator symbol has been alternating for some seconds
   setTimeout(() => {

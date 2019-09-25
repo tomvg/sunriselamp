@@ -1,6 +1,6 @@
-import SegmentDisplayDriver = require('./segmentdisplaydriver')
+import TimeDisplay = require('./timedisplay')
 
-class ConsoleTimeDisplay extends SegmentDisplayDriver {
+class ConsoleTimeDisplay extends TimeDisplay {
   setDisplay(hour: number, minute: number, showSeparator: boolean) {
     this.saveDisplayCharacters(hour, minute, showSeparator)
     const d = this.displayDigits

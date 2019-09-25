@@ -1,13 +1,13 @@
 import Clock = require('./clock')
 import AlarmSettings = require('./alarmsettings')
 import ConsoleTimeDisplay = require('./consoletimedisplay')
-import SegmentDisplay = require('./segmentdisplay')
+import TimeAndAlarmDisplay = require('./timeandalarmdisplay')
 
 const clock = new Clock()
 const alarm = new AlarmSettings()
 const displayDriver = new ConsoleTimeDisplay()
 
-const display = new SegmentDisplay(displayDriver, clock, alarm)
+const display = new TimeAndAlarmDisplay(displayDriver, clock, alarm)
 
 console.log('Enter "c" to show the clock, "a" to thow the alarm time and "x" to exit.')
 
