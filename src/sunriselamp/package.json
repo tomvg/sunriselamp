@@ -29,5 +29,8 @@
     "spi-device": "^2.0.8",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "jimp": "^0.8.4"
   }
 }

@@ -1,13 +1,18 @@
 import Clock = require('./clock')
 import AlarmSettings = require('./alarmsettings')
-import ConsoleTimeDisplay = require('./consoletimedisplay')
+import LedTimeDisplay = require('./ledtimedisplay')
 import TimeAndAlarmDisplay = require('./timeandalarmdisplay')
+import LedDisplayDriver = require('./leddisplaydriver')
+import Sk9822Driver = require('./sk9822driver')
+
+
 
 const clock = new Clock()
 const alarm = new AlarmSettings()
-const displayDriver = new ConsoleTimeDisplay()
+const ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
+const timeDisplay = new LedTimeDisplay(ledDisplay)
 
-const display = new TimeAndAlarmDisplay(displayDriver, clock, alarm)
+const display = new TimeAndAlarmDisplay(timeDisplay, clock, alarm)
 
 console.log('Enter "c" to show the clock, "a" to thow the alarm time and "x" to exit.')
 

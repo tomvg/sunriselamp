@@ -21,6 +21,14 @@ write(image: Buffer) {
   this.driver.setFromBitmap(image, this.startLed)
 }
 
+getWidth() {
+  return this.width
+}
+
+getHeight() {
+  return this.height
+}
+
 /** Change pixel order from left-right, bottom-up to
   * bottom-up, left-right.
   */
