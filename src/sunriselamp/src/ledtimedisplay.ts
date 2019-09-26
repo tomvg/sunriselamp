@@ -31,31 +31,31 @@ class LedTimeDisplay extends TimeDisplay {
     this.ledDisplay.write(Buffer.alloc(this.width * this.height * 4, 0))
   }
 
+  /* I have no idea how the alignment works exactly. I found that these numbers
+  work well for a 7 by 13 matrix. */
   private async printTime(hour: number, minute: number) {
-    const image = await new Jimp(this.width, this.height)
+    const image = await new Jimp(this.width, this.height, 0x050000ff)
     image.print(
       <Font> this.font,
-      0,
-      -this.height,
-    {
-      text: hour.toString(),
-      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-      alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM
-    },
-    this.width,
-    this.height)
-
-    image.print(
-      <Font> this.font,
-      0,
-      1,
+      -1,
+      Math.round(this.height/2),
     {
       text: minute.toString(),
       alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-      alignmentY: Jimp.VERTICAL_ALIGN_TOP
     },
-    this.width,
-    this.height)
+    this.width+2,
+    this.height+2)
+
+    image.print(
+      <Font> this.font,
+      -1,
+      0,
+    {
+      text: hour.toString(),
+      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+    },
+    this.width+2,
+    this.height+2)
 
     this.ledDisplay.write(image.bitmap.data);
   }
