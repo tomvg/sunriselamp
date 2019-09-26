@@ -8,7 +8,7 @@ class LedDisplayDriver {
   private nPixels: number
   private brightnessAdjustment: number
 
-  constructor(driver: Sk9822Driver, startLed: number, width: number, height: number, brightnessAdjustment: number = 0.5) {
+  constructor(driver: Sk9822Driver, startLed: number, width: number, height: number, brightnessAdjustment: number = 1/20) {
     this.driver = driver
     this.startLed = startLed
     this.width = width
@@ -39,7 +39,7 @@ getHeight() {
   */
   private adjustBrightnessInPlace(image: Buffer): Buffer {
     for(let index = 0; index < this.nPixels; index++) {
-      image[index + 3] = Math.round(image[index + 3] * this.brightnessAdjustment)
+      image[4*index + 3] = Math.ceil(image[4*index + 3] * this.brightnessAdjustment)
     }
     return image;
   }

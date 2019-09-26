@@ -36,18 +36,19 @@ test('throws on incorrect bpm insertion', () =>
 test('multiplies brightness by the adjustment', () =>
 {
   const startLed = 0
-  const width = 1
-  const height = 1
+  const width = 4
+  const height = 2
   const brightnessAdjustment = 0.5
 
   const sk9822driver = new MockSk9822Driver(width * height)
   const display = new LedDisplayDriver(sk9822driver, startLed, width, height, brightnessAdjustment)
 
-  const bmp = Buffer.alloc(4, 0xFF)
+  const bmp = Buffer.alloc(4*8, 0xFF)
   display.write(bmp)
 
   const writtenData = sk9822driver.setFromBitmap.mock.calls[0][0]
-  expect(writtenData[3]).toBe(Math.round(0xFF * brightnessAdjustment))
+  expect(writtenData[3]).toBe(Math.ceil(0xFF * brightnessAdjustment))
+  expect(writtenData[writtenData.length - 1]).toBe(Math.ceil(0xFF * brightnessAdjustment))
 })
 
 test('writes to the right leds after transformation', () =>
