@@ -1,11 +1,11 @@
-import SegmentDisplayDriver = require('./segmentdisplaydriver')
+import TimeDisplay = require('./timedisplay')
 import Clock = require('./clock')
 import AlarmSettings = require('./alarmsettings')
 import View = require('./view')
 import Data = require('./data')
 
-class SegmentDisplay extends View {
-  private driver: SegmentDisplayDriver
+class TimeAndAlarmDisplay extends View {
+  private driver: TimeDisplay
 
   private clock: Clock
   private alarm: AlarmSettings
@@ -23,7 +23,7 @@ class SegmentDisplay extends View {
   private blinkTimeout = 500
   private blinkingIsOn = false
 
-  constructor(driver: SegmentDisplayDriver, clock: Clock, alarm: AlarmSettings) {
+  constructor(driver: TimeDisplay, clock: Clock, alarm: AlarmSettings) {
     super()
     this.driver = driver
     this.clock = clock;
@@ -71,7 +71,8 @@ class SegmentDisplay extends View {
   private turnDisplayOn(): void {
     // If already on, just reset the timeout
     if(this.displayIsOn) {
-      this.displayTimer.refresh()
+      clearTimeout(this.displayTimer)
+      this.displayTimer = setTimeout(() => this.turnDisplayOff(), this.displayTimeout)
     }
     else {
       this.displayIsOn = true
@@ -118,4 +119,4 @@ class SegmentDisplay extends View {
   notify() {}
 }
 
-export = SegmentDisplay
+export = TimeAndAlarmDisplay

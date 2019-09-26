@@ -1,4 +1,4 @@
-abstract class SegmentDisplayDriver {
+abstract class TimeDisplay {
   displayDigits: [number, number, number, number] = [0,0,0,0]
   separator: boolean = true
 
@@ -14,4 +14,4 @@ abstract class SegmentDisplayDriver {
   }
 }
 
-export = SegmentDisplayDriver
+export = TimeDisplay
