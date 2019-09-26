@@ -6,18 +6,24 @@ class LedDisplayDriver {
   private width: number
   private height: number
   private nPixels: number
+  private brightnessAdjustment: number
 
-  constructor(driver: Sk9822Driver, startLed: number, width: number, height: number) {
+  constructor(driver: Sk9822Driver, startLed: number, width: number, height: number, brightnessAdjustment: number = 0.5) {
     this.driver = driver
     this.startLed = startLed
     this.width = width
     this.height = height
     this.nPixels = width * height
+    if(brightnessAdjustment > 1 || brightnessAdjustment <= 0) {
+      throw new Error("Illegal brightness adjustment. Value must be in (0,1].")
+    }
+    this.brightnessAdjustment = brightnessAdjustment;
   }
 
 write(image: Buffer) {
   this.validateInput(image)
   image = this.transform(image)
+  image = this.adjustBrightnessInPlace(image)
   this.driver.setFromBitmap(image, this.startLed)
 }
 
@@ -28,6 +34,16 @@ getWidth() {
 getHeight() {
   return this.height
 }
+/**
+  * Multiply the alhpa channel by the brightness brightnessAdjustment
+  */
+  private adjustBrightnessInPlace(image: Buffer): Buffer {
+    for(let index = 0; index < this.nPixels; index++) {
+      image[index + 3] = Math.round(image[index + 3] * this.brightnessAdjustment)
+    }
+    return image;
+  }
+
 
 /** Change pixel order from left-right, bottom-up to
   * bottom-up, left-right.
@@ -47,7 +63,7 @@ getHeight() {
   private convertIndexRightUpToUpRight(oldIndex: number): number {
       const XPosition = oldIndex % this.width
       const YPosition = Math.floor(oldIndex / this.width)
-      return XPosition * this.height + YPosition
+      return XPosition * this.height + (this.height - YPosition - 1)
   }
 
 /** Checks if an image has the right format. Should be performed

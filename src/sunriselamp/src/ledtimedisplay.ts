@@ -28,7 +28,7 @@ class LedTimeDisplay extends TimeDisplay {
   }
 
   turnDisplayOff() {
-    //this.ledDisplay.write(Buffer.alloc(this.width * this.height * 4, 0))
+    this.ledDisplay.write(Buffer.alloc(this.width * this.height * 4, 0))
   }
 
   private async printTime(hour: number, minute: number) {
