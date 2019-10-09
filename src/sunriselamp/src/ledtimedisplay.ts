@@ -1,19 +1,21 @@
 import TimeDisplay = require('./timedisplay')
-import LedDisplayDriver = require('./leddisplaydriver')
+import RectangularDisplay = require('./rectangulardisplay')
 import Jimp from 'jimp'
 import {Font} from 'jimp'
 
 class LedTimeDisplay extends TimeDisplay {
-  private ledDisplay: LedDisplayDriver
+  private ledDisplay: RectangularDisplay
   private font: Font | undefined // Allow undefined so that font can be initialised later
   private width: number
   private height: number
+  private background: Buffer
 
-  constructor(ledDisplay: LedDisplayDriver, fontLocation: string = 'sunrise-font/sunrise-font.fnt') {
+  constructor(ledDisplay: RectangularDisplay, fontLocation: string = 'sunrise-font/sunrise-font.fnt') {
     super()
     this.ledDisplay = ledDisplay
     this.width = ledDisplay.getWidth()
     this.height = ledDisplay.getHeight()
+    this.background = Buffer.alloc(this.width*this.height*4)
     Jimp.loadFont(fontLocation).then(font => this.font = font)
   }
 
@@ -31,10 +33,17 @@ class LedTimeDisplay extends TimeDisplay {
     this.ledDisplay.write(Buffer.alloc(this.width * this.height * 4, 0))
   }
 
+  setBackground(image: Buffer): void {
+    if(image.length !== this.width*this.height*4) {
+      throw("Wrong image size given")
+    }
+    this.background = image
+  }
+
   /* I have no idea how the alignment works exactly. I found that these numbers
   work well for a 7 by 13 matrix. */
   private async printTime(hour: number, minute: number) {
-    const image = await new Jimp(this.width, this.height, 0x050000ff)
+    const image = await new Jimp({ data: this.background, width: this.width, height: this.height })
     image.print(
       <Font> this.font,
       -1,

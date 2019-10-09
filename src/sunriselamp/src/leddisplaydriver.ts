@@ -1,18 +1,16 @@
 import Sk9822Driver = require('./sk9822driver')
+import RectangularDisplay = require('./rectangulardisplay')
 
-class LedDisplayDriver {
+class LedDisplayDriver extends RectangularDisplay {
   private driver: Sk9822Driver
   private startLed: number
-  private width: number
-  private height: number
   private nPixels: number
   private brightnessAdjustment: number
 
   constructor(driver: Sk9822Driver, startLed: number, width: number, height: number, brightnessAdjustment: number = 1/20) {
+    super(width, height)
     this.driver = driver
     this.startLed = startLed
-    this.width = width
-    this.height = height
     this.nPixels = width * height
     if(brightnessAdjustment > 1 || brightnessAdjustment <= 0) {
       throw new Error("Illegal brightness adjustment. Value must be in (0,1].")
@@ -27,13 +25,6 @@ write(image: Buffer) {
   this.driver.setFromBitmap(image, this.startLed)
 }
 
-getWidth() {
-  return this.width
-}
-
-getHeight() {
-  return this.height
-}
 /**
   * Multiply the alhpa channel by the brightness brightnessAdjustment
   */
