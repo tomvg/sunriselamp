@@ -86,7 +86,7 @@ class TimeAndAlarmDisplay extends View {
       this.currentDatasource.unsubscribe(this)
       clearTimeout(this.displayTimer)
       this.displayIsOn = false
-      this.driver.turnDisplayOff()
+      this.driver.setNoDisplay()
       this.turnBlinkingOff()
     }
   }

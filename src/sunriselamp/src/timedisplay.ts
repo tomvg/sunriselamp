@@ -3,7 +3,7 @@ abstract class TimeDisplay {
   separator: boolean = true
 
   abstract setDisplay(hour:number, minute: number, separator: boolean): void
-  abstract turnDisplayOff(): void
+  abstract setNoDisplay(): void
 
   protected saveDisplayCharacters(hours: number, minutes:number, separator: boolean) {
     this.displayDigits[0] = Math.floor(hours / 10)

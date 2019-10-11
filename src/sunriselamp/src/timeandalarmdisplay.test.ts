@@ -5,7 +5,7 @@ import AlarmSettings = require('./alarmsettings')
 
 class MockDriver extends TimeDisplay {
   setDisplay = jest.fn()
-  turnDisplayOff = jest.fn()
+  setNoDisplay = jest.fn()
 }
 
 test('the display is updated when the alarm time changes', () => {
@@ -61,10 +61,10 @@ test('the alarm display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
   const display = new TimeAndAlarmDisplay(driver, new Clock(), new AlarmSettings())
-  expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
+  expect(driver.setNoDisplay.mock.calls.length).toBe(0)
   display.showAlarm()
   setTimeout(() => {
-    expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
+    expect(driver.setNoDisplay.mock.calls.length).toBe(1)
     done()
   }, 10500)
 })
@@ -73,10 +73,10 @@ test('the clock display is turned off again after 10 seconds', (done) => {
   jest.setTimeout(15000); // increase the timeout for this test
   const driver = new MockDriver()
   const display = new TimeAndAlarmDisplay(driver, new Clock(), new AlarmSettings())
-  expect(driver.turnDisplayOff.mock.calls.length).toBe(0)
+  expect(driver.setNoDisplay.mock.calls.length).toBe(0)
   display.showClock()
   setTimeout(() => {
-    expect(driver.turnDisplayOff.mock.calls.length).toBe(1)
+    expect(driver.setNoDisplay.mock.calls.length).toBe(1)
     done()
   }, 10500)
 })

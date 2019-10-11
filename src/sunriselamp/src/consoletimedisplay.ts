@@ -8,7 +8,7 @@ class ConsoleTimeDisplay extends TimeDisplay {
     process.stdout.write(' ' + d[0] + d[1] + s + d[2] + d[3] + '\r')
   }
 
-  turnDisplayOff() {
+  setNoDisplay() {
     process.stdout.write('      \r')
   }
 }
