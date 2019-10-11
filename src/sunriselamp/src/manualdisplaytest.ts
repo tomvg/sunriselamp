@@ -3,13 +3,20 @@ import AlarmSettings = require('./alarmsettings')
 import LedTimeDisplay = require('./ledtimedisplay')
 import TimeAndAlarmDisplay = require('./timeandalarmdisplay')
 import LedDisplayDriver = require('./leddisplaydriver')
+import ConsoleDisplay = require('./consoledisplay')
 import Sk9822Driver = require('./sk9822driver')
 
 
 
 const clock = new Clock()
 const alarm = new AlarmSettings()
-const ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
+let ledDisplay = new ConsoleDisplay(7,13)
+try {
+  const ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
+}
+catch(e) {
+  console.log('Could not open spi device. Falling back to console display.')
+}
 const timeDisplay = new LedTimeDisplay(ledDisplay)
 
 const display = new TimeAndAlarmDisplay(timeDisplay, clock, alarm)
