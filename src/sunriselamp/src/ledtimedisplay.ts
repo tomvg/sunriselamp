@@ -21,7 +21,7 @@ class LedTimeDisplay extends TimeDisplay {
     this.width = ledDisplay.getWidth()
     this.height = ledDisplay.getHeight()
     this.background = Buffer.alloc(this.width*this.height*4)
-    Jimp.loadFont(fontLocation).then(font => {
+    Jimp.loadFont(fontLocation).then((font: Font) => {
       this.font = font
       onReady()
     })
