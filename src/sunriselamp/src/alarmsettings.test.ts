@@ -1,5 +1,6 @@
 import AlarmSettings = require('./alarmsettings')
 import View = require('./view')
+import { networkInterfaces } from 'os'
 
 class MockView extends View {
   notify = jest.fn()
@@ -56,6 +57,24 @@ test('throws on incorrect time', () => {
   expect(() => alarmSettings.setAlarmTime({hour: 24, minute: 0})).toThrow()
   expect(() => alarmSettings.setAlarmTime({hour: 0, minute: 60})).toThrow()
   expect(() => alarmSettings.setAlarmTime({hour: -1, minute: -1})).toThrow()
+})
+
+test('gets the alarm for the next day if todays has already passed', () => {
+  const alarmSettings = new AlarmSettings()
+
+  alarmSettings.setAlarmTime({hour: 0, minute: 0})
+  const now = new Date()
+  const alarmDate = alarmSettings.getAlarmDate()
+  expect(alarmDate.getDay()).not.toBe(now.getDay())
+})
+
+test('gets the alarm for today if todays has not already passed', () => {
+  const alarmSettings = new AlarmSettings()
+
+  alarmSettings.setAlarmTime({hour: 23, minute: 59})
+  const now = new Date()
+  const alarmDate = alarmSettings.getAlarmDate()
+  expect(alarmDate.getDay()).toBe(now.getDay())
 })
 
 export = AlarmSettings

@@ -19,6 +19,17 @@ class AlarmSettings extends Data {
     return this.time
   }
 
+  getAlarmDate(): Date {
+    const dateNow = new Date()
+    const alarmDate = new Date(dateNow)
+    const alarmTime = this.getAlarmTime()
+    alarmDate.setHours(alarmTime.hour, alarmTime.minute, 0, 0)
+    if(dateNow > alarmDate) {
+      alarmDate.setHours(alarmTime.hour + 24)
+    }
+    return alarmDate
+  }
+
   enableAlarm(): void {
     this.alarmEnabled = true
     this.notifyChangeToSubscribers()
