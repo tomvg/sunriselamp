@@ -4,8 +4,9 @@ interface Time {hour: number, minute: number}
 
 /* Keeps settings for the alarm and notifies observers on changes. */
 class AlarmSettings extends Data {
-  time: Time = {hour: 0, minute: 0}
-  alarmEnabled: boolean = false
+  private time: Time = {hour: 0, minute: 0}
+  private sunriseDurationInMS: number = 20 * 60 * 1000
+  private alarmEnabled: boolean = false
 
   setAlarmTime(time: Time): void {
     if(time.hour < 0 || time.hour > 23 || time.minute < 0 || time.minute > 59) {
@@ -19,7 +20,7 @@ class AlarmSettings extends Data {
     return this.time
   }
 
-  getAlarmDate(): Date {
+  getAlarmDateTime(): Date {
     const dateNow = new Date()
     const alarmDate = new Date(dateNow)
     const alarmTime = this.getAlarmTime()
@@ -42,6 +43,15 @@ class AlarmSettings extends Data {
 
   enabled(): boolean {
     return this.alarmEnabled
+  }
+
+  GetSunriseDurationInMS(): number {
+    return this.sunriseDurationInMS
+  }
+
+  SetSunriseDurationInMS(durationInMinutes: number): void {
+    this.sunriseDurationInMS = durationInMinutes
+    this.notifyChangeToSubscribers()
   }
 }
 

@@ -12,7 +12,7 @@ class ClockPrinter extends View {
   }
 
   public notify() {
-    const time = this.clock.getCurrentTime()
+    const time = this.clock.getCurrentDateTime()
     console.log(time.toTimeString())
   }
 }

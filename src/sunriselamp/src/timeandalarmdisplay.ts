@@ -62,7 +62,7 @@ class TimeAndAlarmDisplay extends View {
   }
 
   private updateWithClockTime(): void {
-    const now = this.clock.getCurrentTime()
+    const now = this.clock.getCurrentDateTime()
     this.displayHour = now.getHours()
     this.displayMinute = now.getMinutes()
     this.refreshDisplay()

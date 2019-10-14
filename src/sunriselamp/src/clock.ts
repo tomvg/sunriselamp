@@ -5,7 +5,7 @@ import Data = require('./data')
 class Clock extends Data {
   private notifyTimer: NodeJS.Timeout = {} as NodeJS.Timeout
 
-  public getCurrentTime(): Date {
+  public getCurrentDateTime(): Date {
     return new Date()
   }
 

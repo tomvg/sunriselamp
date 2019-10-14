@@ -64,7 +64,7 @@ test('gets the alarm for the next day if todays has already passed', () => {
 
   alarmSettings.setAlarmTime({hour: 0, minute: 0})
   const now = new Date()
-  const alarmDate = alarmSettings.getAlarmDate()
+  const alarmDate = alarmSettings.getAlarmDateTime()
   expect(alarmDate.getDay()).not.toBe(now.getDay())
 })
 
@@ -73,7 +73,7 @@ test('gets the alarm for today if todays has not already passed', () => {
 
   alarmSettings.setAlarmTime({hour: 23, minute: 59})
   const now = new Date()
-  const alarmDate = alarmSettings.getAlarmDate()
+  const alarmDate = alarmSettings.getAlarmDateTime()
   expect(alarmDate.getDay()).toBe(now.getDay())
 })
 
