@@ -44,11 +44,11 @@ test('time is set correctly', () => {
 test('alarm is enabled and disabled correctly', () => {
   const alarmSettings = new AlarmSettings()
 
-  expect(alarmSettings.enabled()).toBe(false)
+  expect(alarmSettings.isEnabled()).toBe(false)
   alarmSettings.enableAlarm()
-  expect(alarmSettings.enabled()).toBe(true)
+  expect(alarmSettings.isEnabled()).toBe(true)
   alarmSettings.disableAlarm()
-  expect(alarmSettings.enabled()).toBe(false)
+  expect(alarmSettings.isEnabled()).toBe(false)
 })
 
 test('throws on incorrect time', () => {

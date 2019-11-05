@@ -5,11 +5,14 @@ import TimeAndAlarmDisplay = require('./timeandalarmdisplay')
 import LedDisplayDriver = require('./leddisplaydriver')
 import ConsoleDisplay = require('./consoledisplay')
 import Sk9822Driver = require('./sk9822driver')
+import SunriseAnimation = require('./sunriseanimation')
+import LedTimeBackground = require('./ledtimebackground')
+import Alarm = require('./alarm')
 
 
 
 const clock = new Clock()
-const alarm = new AlarmSettings()
+const alarmSettings = new AlarmSettings()
 let ledDisplay = new ConsoleDisplay(7,13)
 try {
   const ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
@@ -19,7 +22,21 @@ catch(e) {
 }
 const timeDisplay = new LedTimeDisplay(ledDisplay)
 
-const display = new TimeAndAlarmDisplay(timeDisplay, clock, alarm)
+const display = new TimeAndAlarmDisplay(timeDisplay, clock, alarmSettings)
+
+const background = new LedTimeBackground(timeDisplay)
+
+const sunrise = new SunriseAnimation(background)
+
+const alarm = new Alarm(alarmSettings, sunrise)
+
+alarmSettings.SetSunriseDurationInMS(60000)
+const alarmTime = new Date(new Date().getTime() + 130000)
+alarmSettings.setAlarmTime({hour: alarmTime.getHours(), minute: alarmTime.getMinutes()})
+alarmSettings.enableAlarm()
+
+
+
 
 console.log('Enter "c" to show the clock, "a" to thow the alarm time and "x" to exit.')
 

@@ -55,6 +55,14 @@ class LedTimeDisplay extends TimeDisplay {
     }
   }
 
+  getWidth(): number {
+    return this.width
+  }
+
+  getHeight(): number {
+    return this.height
+  }
+
   /* I have no idea how the alignment works exactly. I found that these numbers
   work well for a 7 by 13 matrix. */
   private async printTime(hour: number, minute: number) {

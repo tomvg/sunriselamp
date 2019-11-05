@@ -41,7 +41,7 @@ class AlarmSettings extends Data {
     this.notifyChangeToSubscribers()
   }
 
-  enabled(): boolean {
+  isEnabled(): boolean {
     return this.alarmEnabled
   }
 
