@@ -15,7 +15,7 @@ const clock = new Clock()
 const alarmSettings = new AlarmSettings()
 let ledDisplay = new ConsoleDisplay(7,13)
 try {
-  const ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
+  ledDisplay = new LedDisplayDriver(new Sk9822Driver(7*13), 0, 7, 13)
 }
 catch(e) {
   console.log('Could not open spi device. Falling back to console display.')
@@ -31,7 +31,7 @@ const sunrise = new SunriseAnimation(background)
 const alarm = new Alarm(alarmSettings, sunrise)
 
 alarmSettings.SetSunriseDurationInMS(60000)
-const alarmTime = new Date(new Date().getTime() + 130000)
+const alarmTime = new Date(new Date().getTime() + 40000)
 alarmSettings.setAlarmTime({hour: alarmTime.getHours(), minute: alarmTime.getMinutes()})
 alarmSettings.enableAlarm()
 

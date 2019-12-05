@@ -12,7 +12,10 @@ class ConsoleDisplay extends RectangularDisplay {
     for(let y = 0; y < this.getHeight(); y++) {
       for(let x = 0; x < this.getWidth(); x++) {
         let idx = (y * this.getWidth() + x) * 4
-        imageText += chalk.rgb(image[idx], image[idx+1], image[idx+2])('\u2588')
+        const alpha = image[idx + 3] / 255
+        imageText += chalk.rgb(image[idx] * alpha,
+                               image[idx+1] * alpha,
+                               image[idx+2] * alpha)('\u2588')
       }
       imageText += '\n'
     }
