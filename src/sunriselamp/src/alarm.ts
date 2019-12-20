@@ -53,6 +53,8 @@ class Alarm extends View {
     }
 
     private ringAlarm(): void {
+      this.sunriseTimer.cancel()
+      this.sunrise.setBrightness(1)
       //TODO make a sound
     }
 
