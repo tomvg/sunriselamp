@@ -2,20 +2,25 @@ import View = require('./view')
 import Clock = require('./clock')
 import AlarmSettings = require('./alarmsettings')
 import SunriseAnimation = require('./sunriseanimation')
-import schedule = require('node-schedule')
+import Schedule = require('./schedule')
+import ScheduleInterval = require('./scheduleinterval')
 
 class Alarm extends View {
     private alarmSettings: AlarmSettings
     private sunrise: SunriseAnimation
 
     private alarmEnabled: boolean = false
-    private ringTimer: schedule.Job = {} as schedule.Job
-    private sunriseTimer: schedule.Job = {} as schedule.Job
+    private ringTimer: Schedule
+    private sunriseTimer: ScheduleInterval
+
+    private sunriseUpdateIntervalInMs = 10000
 
     constructor(alarmSettings: AlarmSettings, sunrise: SunriseAnimation) {
         super()
         this.alarmSettings = alarmSettings
         this.sunrise = sunrise
+        this.ringTimer = new Schedule(this.ringAlarm.bind(this))
+        this.sunriseTimer = new ScheduleInterval(this.updateSunrise.bind(this))
 
         alarmSettings.subscribe(this)
     }
@@ -43,18 +48,11 @@ class Alarm extends View {
       const sunriseDurationInMS = this.alarmSettings.GetSunriseDurationInMS()
       const sunriseStartDate = new Date(alarmDate.getTime() - sunriseDurationInMS)
 
-      this.ringTimer = schedule.scheduleJob(alarmDate, () => this.ringAlarm())
-      this.sunriseTimer = schedule.scheduleJob({
-        start: sunriseStartDate,
-        end: alarmDate,
-        rule: '/10 * * * * * *' // every 10 seconds (cron notation)
-      }, () => this.updateSunrise())
-      this.updateSunrise()
+      this.ringTimer.runAt(alarmDate)
+      this.sunriseTimer.runAt(this.sunriseUpdateIntervalInMs, sunriseStartDate, alarmDate)
     }
 
     private ringAlarm(): void {
-      this.sunriseTimer.cancel()
-      this.sunrise.setBrightness(1)
       //TODO make a sound
     }
 
