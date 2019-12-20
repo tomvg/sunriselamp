@@ -8,10 +8,23 @@ class Schedule {
   }
 
   public runAt(plannedDateTime: Date) {
+    this.cancel()
     const plannedTime = plannedDateTime.getTime()
     const now = new Date().getTime()
 
-    //this.timeout = setTimeout(this.callback, plannedTime - now)
+    const waitTime = plannedTime - now
+    if(waitTime <= 0) {
+      this.callback()
+    }
+    else {
+      this.timeout = setTimeout(this.callback, waitTime)
+    }
+  }
+
+  public cancel() {
+    if(this.timeout) {
+      clearTimeout(this.timeout)
+    }
   }
 }
 
